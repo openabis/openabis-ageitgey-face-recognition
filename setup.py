@@ -12,4 +12,7 @@ setup(
     install_requires=[
         'face-recognition',
     ],
+    package_data={
+        '': ['*'],
+    }
 )
