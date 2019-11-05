@@ -5,8 +5,8 @@ from face_recognition import face_encodings, load_image_file, api
 
 from .exceptions import FaceNotRecognized
 
-DEFAULT_ENCODING = "128-dimension"
-MATCHING_TOLERANCE = 0.5
+# Default encoding from ageitgey/face-recognition
+IMAGE_ENCODING = "128-dimension"
 
 
 class FaceRecognition:
@@ -32,14 +32,14 @@ class FaceRecognition:
             raise FaceNotRecognized
 
         image_encoding = face.encodings.add()
-        image_encoding.name = DEFAULT_ENCODING
+        image_encoding.name = IMAGE_ENCODING
         image_encoding.encoding = face_encoding.dumps()
 
         return face
 
     def get_encoding(self, face):
         for item in face.encodings:
-            if item.name == DEFAULT_ENCODING:
+            if item.name == IMAGE_ENCODING:
                 return np.loads(item.encoding)
 
         return None
