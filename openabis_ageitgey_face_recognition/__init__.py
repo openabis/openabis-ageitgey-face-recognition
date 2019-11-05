@@ -3,7 +3,7 @@ import io
 import numpy as np
 from face_recognition import face_encodings, load_image_file, api
 
-from .exceptions import FaceNotRecognized
+from .exceptions import FaceNotRecognized, MultipleFacesDetected
 
 DEFAULT_ENCODING = "128-dimension"
 MATCHING_TOLERANCE = 0.5
@@ -16,21 +16,28 @@ class FaceRecognition:
 
     def __init__(self, config):
         """
-        :param config: Dictionary of environment variables. Required by OpenAbis.
+        :param config: Environment configurations.
         """
-        pass
+        self.config = config
 
     def encode_image(self, face):
+        """
+        Encode image to 128-dimensional face encodings
+        :param face: Face object
+        :return: Face object
+        """
         image = load_image_file(io.BytesIO(face.image))
 
-        try:
-            # The method returns a list of encodings because an image can have multiple faces, since we are sure to
-            # have a single face per image, we only get the first item from list
-            face_encoding = face_encodings(image)[0]
+        # The method returns a list of encodings because an image can have multiple faces.
+        encodings = face_encodings(image)
 
-        except IndexError:
-            raise FaceNotRecognized
-
+        if len(encodings) < 1:
+            raise FaceNotRecognized("No face detected in the image. A single face in the image is required.")
+        elif len(encodings) > 1:
+            raise MultipleFacesDetected(
+                "Multiple faces are detected in the image. Please ensure a single face in the image."
+            )
+        face_encoding = encodings[0]
         image_encoding = face.encodings.add()
         image_encoding.name = DEFAULT_ENCODING
         image_encoding.encoding = face_encoding.dumps()
