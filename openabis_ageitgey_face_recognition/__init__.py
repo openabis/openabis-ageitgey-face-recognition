@@ -38,17 +38,37 @@ class FaceRecognition:
         return face
 
     def get_encoding(self, face):
+        """
+        Get the 128-dimensional encoding from face object
+        :param face: Face object
+        :return:
+         If face object has the encoding, return ther 128-dimensional numpy array encoding of the image.
+         If not, return an empty numpy array
+        """
         for item in face.encodings:
             if item.name == DEFAULT_ENCODING:
                 return np.loads(item.encoding)
 
-        return None
+        return np.empty(0)
 
     def match_face_encodings(self, known_face, face_to_compare):
+        """
+        Match face encodings
+        :param known_face: Face object as the basis for verification
+        :param face_to_compare: Face object to verify
+        :return: Value of face distance as computed
+        """
         known_face_encoding = self.get_encoding(known_face)
         face_encoding_to_compare = self.get_encoding(face_to_compare)
+
+        if known_face_encoding.size < 1:
+            known_face_encoding = self.encode_image(known_face)
+
+        if face_encoding_to_compare.size < 1:
+            known_face_encoding = self.encode_image(face_to_compare)
+
         face_distance = api.face_distance(
             face_encodings=[known_face_encoding], face_to_compare=face_encoding_to_compare
         )
 
-        return face_distance
+        return face_distance[0]
