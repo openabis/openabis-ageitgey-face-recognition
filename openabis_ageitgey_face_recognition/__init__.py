@@ -72,7 +72,7 @@ class FaceRecognition:
             known_face_encoding = self.encode_image(known_face)
 
         if face_encoding_to_compare.size < 1:
-            known_face_encoding = self.encode_image(face_to_compare)
+            face_encoding_to_compare = self.encode_image(face_to_compare)
 
         face_distance = api.face_distance(
             face_encodings=[known_face_encoding], face_to_compare=face_encoding_to_compare
