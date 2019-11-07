@@ -32,10 +32,10 @@ class FaceRecognition:
         encodings = face_encodings(image)
 
         if len(encodings) < 1:
-            raise FaceNotRecognized("No face detected in the image. A single face in the image is required.")
+            raise FaceNotRecognized(message="No face detected in the image. A single face in the image is required.")
         elif len(encodings) > 1:
             raise MultipleFacesDetected(
-                "Multiple faces are detected in the image. Please ensure a single face in the image."
+                message="Multiple faces are detected in the image. Please ensure a single face in the image."
             )
         face_encoding = encodings[0]
         image_encoding = face.encodings.add()
