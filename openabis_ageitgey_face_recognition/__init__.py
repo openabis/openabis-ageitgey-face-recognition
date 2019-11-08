@@ -38,7 +38,7 @@ class FaceRecognition:
                 "Multiple faces are detected in the image. Please ensure a single face in the image."
             )
         face_encoding = encodings[0]
-        face_template = face.template.add()
+        face_template = face.templates.add()
         face_template.format = IMAGE_ENCODING
         face_template.template = face_encoding.dumps()
 
