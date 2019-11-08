@@ -38,16 +38,16 @@ class FaceRecognition:
                 "Multiple faces are detected in the image. Please ensure a single face in the image."
             )
         face_encoding = encodings[0]
-        image_encoding = face.encodings.add()
-        image_encoding.name = IMAGE_ENCODING
-        image_encoding.encoding = face_encoding.dumps()
+        face_template = face.template.add()
+        face_template.format = IMAGE_ENCODING
+        face_template.template = face_encoding.dumps()
 
         return face
 
     def get_encoding(self, face):
         for item in face.encodings:
-            if item.name == IMAGE_ENCODING:
-                return np.loads(item.encoding)
+            if item.format == IMAGE_ENCODING:
+                return np.loads(item.template)
 
         return None
 
