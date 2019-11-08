@@ -52,7 +52,7 @@ class FaceRecognition:
          If face object has the encoding, return ther 128-dimensional numpy array encoding of the image.
          If not, return an empty numpy array
         """
-        for item in face.encodings:
+        for item in face.templates:
             if item.format == IMAGE_ENCODING:
                 return np.loads(item.template)
 
