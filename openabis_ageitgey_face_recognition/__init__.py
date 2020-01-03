@@ -38,7 +38,7 @@ class FaceRecognition:
                 "Multiple faces are detected in the image. Please ensure a single face in the image."
             )
         face_encoding = encodings[0]
-        face_template = face.template.add()
+        face_template = face.templates.add()
         face_template.format = IMAGE_ENCODING
         face_template.template = face_encoding.dumps()
 
@@ -52,7 +52,7 @@ class FaceRecognition:
          If face object has the encoding, return ther 128-dimensional numpy array encoding of the image.
          If not, return an empty numpy array
         """
-        for item in face.encodings:
+        for item in face.templates:
             if item.format == IMAGE_ENCODING:
                 return np.loads(item.template)
 
